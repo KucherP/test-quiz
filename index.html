@@ -301,11 +301,11 @@
 
 <script>
 const specs = {
-  B13: { name: "Бібліотечна, інформаційна та архівна справа", program: "Бібліотечна, інформаційна та архівна справа", emoji: "📚", desc: "Ти — охоронець знань і майстер пошуку інформації. Тебе цікавить, як організовувати, зберігати та поширювати знання. З тобою жодна важлива інформація не загубиться!" },
-  F2:  { name: "Інженерія програмного забезпечення", program: "Інженерія програмного забезпечення", emoji: "💻", desc: "Ти — будівничий цифрового світу. Код для тебе — це мова, якою можна сказати все. Ти любиш структуру, чисту архітектуру і те, коли все працює як годинник." },
-  F3:  { name: "Комп'ютерні науки", program: "Комп'ютерні науки", emoji: "🤖", desc: "Ти — дослідник майбутнього. Тебе захоплює, як машини навчаються мислити. Алгоритми, дані, моделі — твоя стихія." },
-  G7:  { name: "Автоматизація, комп'ютерно-інтегровані технології та робототехніка", program: "Автоматизація, комп'ютерно-інтегровані технології та робототехніка", emoji: "🦾", desc: "Ти — інженер, що оживляє машини. Тебе тягне до фізичного світу: мікроконтролери, датчики, маніпулятори. Ти хочеш, щоб твій код рухав реальні об'єкти." },
-  J8:  { name: "Автомобільний транспорт", program: "Автомобільний транспорт", emoji: "🚗", desc: "Ти — людина руху. Тобі цікаво, як влаштовані транспортні системи, логістика та автомобільна техніка. Ти хочеш, щоб світ рухався ефективніше." }
+  B13: { name: "Бібліотечна, інформаційна та архівна справа", programs: ["Управління інформаційно-аналітичною діяльністю та комунікації з громадськістю"], emoji: "📚", desc: "Ти — охоронець знань і майстер пошуку інформації. Тебе цікавить, як організовувати, зберігати та поширювати знання. З тобою жодна важлива інформація не загубиться!" },
+  F2:  { name: "Інженерія програмного забезпечення", programs: ["Інженерія програмного забезпечення"], emoji: "💻", desc: "Ти — будівничий цифрового світу. Код для тебе — це мова, якою можна сказати все. Ти любиш структуру, чисту архітектуру і те, коли все працює як годинник." },
+  F3:  { name: "Комп'ютерні науки", programs: ["Комп'ютерні науки та штучний інтелект", "Комп'ютерні технології обробки даних"], emoji: "🤖", desc: "Ти — дослідник майбутнього. Тебе захоплює, як машини навчаються мислити. Алгоритми, дані, моделі — твоя стихія." },
+  G7:  { name: "Автоматизація, комп'ютерно-інтегровані технології та робототехніка", programs: ["Робототехніка та комп'ютеризовані системи управління"], emoji: "🦾", desc: "Ти — інженер, що оживляє машини. Тебе тягне до фізичного світу: мікроконтролери, датчики, маніпулятори. Ти хочеш, щоб твій код рухав реальні об'єкти." },
+  J8:  { name: "Автомобільний транспорт", programs: ["Автомобільні перевезення та транспортні технології", "Організація міжнародних перевезень", "Митна справа у транспортній галузі", "Транспортно-логістичні системи вантажних автомобільних перевезень", "Розумний транспорт і логістика для міст"], emoji: "🚗", desc: "Ти — людина руху. Тобі цікаво, як влаштовані транспортні системи, логістика та автомобільна техніка. Ти хочеш, щоб світ рухався ефективніше." }
 };
 
 const questions = [
@@ -419,13 +419,33 @@ async function renderResult(area) {
   const imgSrc = await getRandomCatImg(topKey);
   const imgHtml = imgSrc ? `<img class="cat-img" src="${imgSrc}" alt="котик">` : '';
 
+  const programsHtml = `
+    <div style="margin-bottom:1.5rem;">
+      <div class="others-title" style="margin-bottom:8px;">Освітні програми</div>
+      ${sp.programs.map(p => `
+        <div style="display:flex; align-items:flex-start; gap:8px; padding:6px 0; border-bottom:1px solid var(--border);">
+          <span style="color:var(--accent); font-size:16px; line-height:1.4;">▸</span>
+          <span style="font-size:13px; color:var(--text); line-height:1.5;">${p}</span>
+        </div>`).join('')}
+    </div>`;
+
+  const imgBlock = imgSrc ? `
+    <div style="margin-bottom:1.5rem;">
+      <div style="margin-bottom:0.75rem;">
+        <div style="font-family:'Unbounded',sans-serif;font-size:9px;font-weight:600;letter-spacing:0.1em;color:var(--muted);text-transform:uppercase;margin-bottom:5px;">Твоя спеціальність</div>
+        <div style="font-family:'Unbounded',sans-serif;font-size:clamp(13px,3vw,17px);font-weight:700;color:var(--text);line-height:1.3;">${sp.emoji} ${sp.name}</div>
+      </div>
+      <img src="${imgSrc}" alt="котик" style="width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:12px;display:block;">
+    </div>` : `
+    <div style="margin-bottom:1.5rem;">
+      <div style="font-family:'Unbounded',sans-serif;font-size:9px;font-weight:600;letter-spacing:0.1em;color:var(--muted);text-transform:uppercase;margin-bottom:5px;">Твоя спеціальність</div>
+      <div style="font-family:'Unbounded',sans-serif;font-size:clamp(13px,3vw,17px);font-weight:700;color:var(--text);line-height:1.3;">${sp.emoji} ${sp.name}</div>
+    </div>`;
+
   area.innerHTML = `
-    ${imgHtml}
-    <span class="result-emoji">${sp.emoji}</span>
-    <div class="result-label">Твоя спеціальність</div>
-    <div class="result-name">${sp.name}</div>
-    <div class="result-program">Освітня програма: ${sp.program}</div>
+    ${imgBlock}
     <div class="result-desc-box">${sp.desc}</div>
+    ${programsHtml}
     <div class="others-title">Також підходять</div>
     ${othersHtml}
     <button class="restart-btn" onclick="restart()">↺ Пройти ще раз</button>`;
