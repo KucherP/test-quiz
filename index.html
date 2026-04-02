@@ -13,8 +13,8 @@
     --card: #FFFFFF;
     --text: #1A1A2E;
     --muted: #7A7A8C;
-    --accent: #5B4FD4;
-    --accent-light: #EAE8FA;
+    --accent: #2F3D88;
+    --accent-light: #E5E8F5;
     --border: rgba(26,26,46,0.1);
     --radius: 16px;
   }
@@ -199,7 +199,7 @@
     padding: 1rem 1.25rem;
     font-size: 14px;
     line-height: 1.7;
-    color: #3D3580;
+    color: #2a3570;
     margin-bottom: 1.5rem;
   }
 
@@ -272,7 +272,8 @@
   }
 
   footer {
-    margin-top: 2rem;
+    margin-top: auto;
+    padding-top: 2rem;
     font-size: 12px;
     color: var(--muted);
     text-align: center;
@@ -287,7 +288,7 @@
 
 
 <header>
-  <div class="badge">ФТІТ · Квіз для абітурієнтів</div>
+  <div class="badge">Квіз для абітурієнтів</div>
   <h1>Який ти <span>котик ФТІТ</span>?</h1>
   <p class="subtitle">Дай відповідь — і ми підберемо спеціальність саме для тебе</p>
 </header>
@@ -435,7 +436,7 @@ function showSplash() {
   const messages = ['Підбираємо котиків...', 'Зважуємо лапки...', 'Майже готово...'];
   let step = 0;
   area.innerHTML = `
-    <div style="text-align:center; padding: 2rem 0;">
+    <div style="text-align:center; padding: 5rem 0;">
       <div style="font-size: 56px; margin-bottom: 1.5rem; animation: pop 0.5s cubic-bezier(0.34,1.56,0.64,1) both;">🐾</div>
       <div id="splash-msg" style="font-family:'Unbounded',sans-serif; font-size:13px; font-weight:600; color:var(--accent); margin-bottom:1.25rem; min-height:20px;">${messages[0]}</div>
       <div style="width:100%; height:5px; background:var(--accent-light); border-radius:3px; overflow:hidden;">
@@ -467,7 +468,6 @@ function showIntro() {
     <img src="${BASE_URL}/cats/Intro/intro.gif" alt="котик"
       style="width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:12px;margin-bottom:1.25rem;display:block;background:var(--accent-light);">
     <div style="text-align:center;">
-      <div style="font-family:'Unbounded',sans-serif; font-size:11px; font-weight:600; letter-spacing:0.08em; color:var(--muted); text-transform:uppercase; margin-bottom:1.5rem;">Квіз для абітурієнтів</div>
       <button class="restart-btn" onclick="render()">Поїхали 🐾</button>
     </div>`;
 }
