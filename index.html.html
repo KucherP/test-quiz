@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Який ти котик ФТІТ?</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700&family=Geologica:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #F5F3EF;
+    --card: #FFFFFF;
+    --text: #1A1A2E;
+    --muted: #7A7A8C;
+    --accent: #5B4FD4;
+    --accent-light: #EAE8FA;
+    --border: rgba(26,26,46,0.1);
+    --radius: 16px;
+  }
+
+  body {
+    font-family: 'Geologica', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 1rem 4rem;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    max-width: 560px;
+  }
+
+  .badge {
+    display: inline-block;
+    font-family: 'Unbounded', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    background: var(--accent);
+    color: #fff;
+    padding: 5px 14px;
+    border-radius: 100px;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    font-family: 'Unbounded', sans-serif;
+    font-size: clamp(22px, 5vw, 34px);
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--text);
+    margin-bottom: 0.75rem;
+  }
+
+  h1 span { color: var(--accent); }
+
+  .subtitle {
+    font-size: 15px;
+    color: var(--muted);
+    font-weight: 300;
+    line-height: 1.6;
+  }
+
+  .card {
+    background: var(--card);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    padding: 2rem;
+    width: 100%;
+    max-width: 560px;
+    box-shadow: 0 2px 24px rgba(0,0,0,0.05);
+  }
+
+  .progress-wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 1.75rem;
+  }
+
+  .progress-bar {
+    flex: 1;
+    height: 5px;
+    background: var(--accent-light);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 3px;
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .progress-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--muted);
+    white-space: nowrap;
+    font-family: 'Unbounded', sans-serif;
+  }
+
+  .q-text {
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 1.5;
+    color: var(--text);
+    margin-bottom: 1.5rem;
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .opt-btn {
+    background: var(--bg);
+    border: 1.5px solid transparent;
+    border-radius: 12px;
+    padding: 14px 18px;
+    text-align: left;
+    font-family: 'Geologica', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.18s ease;
+    line-height: 1.5;
+  }
+
+  .opt-btn:hover {
+    background: var(--accent-light);
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateX(3px);
+  }
+
+  .opt-btn.picked {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+    transform: translateX(3px);
+  }
+
+  /* RESULT */
+  .result-emoji {
+    font-size: 56px;
+    display: block;
+    text-align: center;
+    margin-bottom: 1rem;
+    animation: pop 0.4s cubic-bezier(0.34,1.56,0.64,1) both;
+  }
+
+  @keyframes pop {
+    from { transform: scale(0.5); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+
+  .result-label {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 6px;
+  }
+
+  .result-name {
+    font-family: 'Unbounded', sans-serif;
+    font-size: clamp(16px, 4vw, 20px);
+    font-weight: 700;
+    text-align: center;
+    color: var(--text);
+    margin-bottom: 6px;
+    line-height: 1.3;
+  }
+
+  .result-program {
+    font-size: 13px;
+    color: var(--muted);
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .result-desc-box {
+    background: var(--accent-light);
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    font-size: 14px;
+    line-height: 1.7;
+    color: #3D3580;
+    margin-bottom: 1.5rem;
+  }
+
+  .others-title {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-family: 'Unbounded', sans-serif;
+    margin-bottom: 10px;
+  }
+
+  .other-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .other-item:last-child { border-bottom: none; }
+
+  .other-emoji { font-size: 18px; width: 24px; text-align: center; }
+
+  .other-name {
+    flex: 1;
+    font-size: 13px;
+    color: var(--text);
+  }
+
+  .other-bar-wrap {
+    width: 80px;
+    height: 5px;
+    background: var(--accent-light);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .other-bar {
+    height: 100%;
+    border-radius: 3px;
+    background: var(--accent);
+    opacity: 0.5;
+  }
+
+  .restart-btn {
+    display: block;
+    width: 100%;
+    margin-top: 1.5rem;
+    padding: 13px;
+    background: var(--text);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-family: 'Unbounded', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+  .restart-btn:hover { opacity: 0.82; }
+
+  .cat-img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 1.25rem;
+    display: block;
+  }
+
+  footer {
+    margin-top: 2rem;
+    font-size: 12px;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  @media (max-width: 480px) {
+    .card { padding: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="badge">ФТІТ · Квіз для абітурієнтів</div>
+  <h1>Який ти <span>котик ФТІТ</span>?</h1>
+  <p class="subtitle">2 питання — і ми підберемо спеціальність, що підходить саме тобі</p>
+</header>
+
+<div class="card" id="card">
+  <div id="quiz-area"></div>
+</div>
+
+<footer>Факультет транспортних та інформаційних технологій</footer>
+
+<script>
+const specs = {
+  B13: { name: "Бібліотечна, інформаційна та архівна справа", program: "Бібліотечна, інформаційна та архівна справа", emoji: "📚", desc: "Ти — охоронець знань і майстер пошуку інформації. Тебе цікавить, як організовувати, зберігати та поширювати знання. З тобою жодна важлива інформація не загубиться!" },
+  F2:  { name: "Інженерія програмного забезпечення", program: "Інженерія програмного забезпечення", emoji: "💻", desc: "Ти — будівничий цифрового світу. Код для тебе — це мова, якою можна сказати все. Ти любиш структуру, чисту архітектуру і те, коли все працює як годинник." },
+  F3:  { name: "Комп'ютерні науки", program: "Комп'ютерні науки", emoji: "🤖", desc: "Ти — дослідник майбутнього. Тебе захоплює, як машини навчаються мислити. Алгоритми, дані, моделі — твоя стихія." },
+  G7:  { name: "Автоматизація, комп'ютерно-інтегровані технології та робототехніка", program: "Автоматизація, комп'ютерно-інтегровані технології та робототехніка", emoji: "🦾", desc: "Ти — інженер, що оживляє машини. Тебе тягне до фізичного світу: мікроконтролери, датчики, маніпулятори. Ти хочеш, щоб твій код рухав реальні об'єкти." },
+  J8:  { name: "Автомобільний транспорт", program: "Автомобільний транспорт", emoji: "🚗", desc: "Ти — людина руху. Тобі цікаво, як влаштовані транспортні системи, логістика та автомобільна техніка. Ти хочеш, щоб світ рухався ефективніше." }
+};
+
+const questions = [
+  {
+    text: "Яке заняття тобі найбільше до вподоби у вільний час?",
+    options: [
+      { text: "Читати книги, впорядковувати колекції або шукати інформацію в різних джерелах", scores: { B13: 3, F2: 1, F3: 1, G7: 0, J8: 0 } },
+      { text: "Писати код, розробляти програми або розбиратися з новим софтом", scores: { B13: 0, F2: 3, F3: 1, G7: 1, J8: 0 } },
+      { text: "Розв'язувати логічні задачі, вивчати алгоритми або аналізувати дані", scores: { B13: 0, F2: 0, F3: 3, G7: 1, J8: 1 } },
+      { text: "Збирати пристрої, програмувати мікроконтролери або автоматизувати процеси", scores: { B13: 1, F2: 0, F3: 0, G7: 3, J8: 1 } },
+      { text: "Розбирати техніку, цікавитися автомобілями або механічними системами", scores: { B13: 1, F2: 1, F3: 0, G7: 0, J8: 3 } }
+    ]
+  },
+  {
+    text: "Що тебе найбільше приваблює у майбутній професії?",
+    options: [
+      { text: "Зберігати, систематизувати та надавати доступ до знань і документів", scores: { B13: 3, F2: 1, F3: 1, G7: 0, J8: 0 } },
+      { text: "Створювати програмні продукти, які використовують мільйони людей", scores: { B13: 0, F2: 3, F3: 1, G7: 1, J8: 0 } },
+      { text: "Досліджувати дані, будувати моделі та знаходити закономірності", scores: { B13: 0, F2: 0, F3: 3, G7: 1, J8: 1 } },
+      { text: "Проектувати автоматизовані системи та керувати складними механізмами", scores: { B13: 1, F2: 0, F3: 0, G7: 3, J8: 1 } },
+      { text: "Обслуговувати, вдосконалювати та керувати транспортною технікою", scores: { B13: 1, F2: 1, F3: 0, G7: 0, J8: 3 } }
+    ]
+  }
+];
+
+let current = 0;
+let scores = {};
+Object.keys(specs).forEach(k => scores[k] = 0);
+
+function render() {
+  const area = document.getElementById('quiz-area');
+  if (current >= questions.length) { renderResult(area); return; }
+  const q = questions[current];
+  const pct = Math.round((current / questions.length) * 100);
+  area.innerHTML = `
+    <div class="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+      <span class="progress-label">${current + 1} / ${questions.length}</span>
+    </div>
+    <div class="q-text">${q.text}</div>
+    <div class="options">
+      ${q.options.map((o, i) => `<button class="opt-btn" onclick="choose(${i})">${o.text}</button>`).join('')}
+    </div>`;
+}
+
+function choose(idx) {
+  const btns = document.querySelectorAll('.opt-btn');
+  btns.forEach(b => b.disabled = true);
+  btns[idx].classList.add('picked');
+  const s = questions[current].options[idx].scores;
+  Object.entries(s).forEach(([k, v]) => { scores[k] = (scores[k] || 0) + v; });
+  setTimeout(() => { current++; render(); }, 320);
+}
+
+// ── Google Sheets logging ──────────────────────────────────────────
+// Встав свій Apps Script URL замість цього рядка:
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxdoLA41LDduS5Xgn75MXOAw0BjgPz_yMKkt-4ztVkmaEq_qYv1lzP2HbqV0Q2Ms5TY/exec';
+
+function logToSheets(specKey, specName) {
+  if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL === 'YOUR_APPS_SCRIPT_URL_HERE') return;
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('uk-UA');
+  const timeStr = now.toLocaleTimeString('uk-UA', { hour: '2-digit', minute: '2-digit' });
+  const payload = {
+    result_code: specKey,
+    result_name: specName,
+    date: dateStr,
+    time: timeStr,
+  };
+  fetch(APPS_SCRIPT_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  }).catch(() => {}); // тихо ігноруємо помилки мережі
+}
+// ──────────────────────────────────────────────────────────────────
+
+const BASE_URL = 'https://KucherP.github.io/test-quiz';
+
+async function getRandomCatImg(specKey) {
+  try {
+    const res = await fetch(`${BASE_URL}/cats/${specKey}/index.json`);
+    if (!res.ok) return null;
+    const files = await res.json();
+    if (!files || !files.length) return null;
+    const file = files[Math.floor(Math.random() * files.length)];
+    return `${BASE_URL}/cats/${specKey}/${file}`;
+  } catch {
+    return null;
+  }
+}
+
+async function renderResult(area) {
+  const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+  const [topKey] = sorted[0];
+  const sp = specs[topKey];
+  logToSheets(topKey, sp.name);
+  const maxScore = sorted[0][1] || 1;
+
+  const othersHtml = sorted.slice(1, 5).map(([k, v]) => {
+    const s = specs[k];
+    const pct = Math.round((v / maxScore) * 100);
+    return `<div class="other-item">
+      <span class="other-emoji">${s.emoji}</span>
+      <span class="other-name">${s.name}</span>
+      <div class="other-bar-wrap"><div class="other-bar" style="width:${pct}%"></div></div>
+    </div>`;
+  }).join('');
+
+  const imgSrc = await getRandomCatImg(topKey);
+  const imgHtml = imgSrc ? `<img class="cat-img" src="${imgSrc}" alt="котик">` : '';
+
+  area.innerHTML = `
+    ${imgHtml}
+    <span class="result-emoji">${sp.emoji}</span>
+    <div class="result-label">Твоя спеціальність</div>
+    <div class="result-name">${sp.name}</div>
+    <div class="result-program">Освітня програма: ${sp.program}</div>
+    <div class="result-desc-box">${sp.desc}</div>
+    <div class="others-title">Також підходять</div>
+    ${othersHtml}
+    <button class="restart-btn" onclick="restart()">↺ Пройти ще раз</button>`;
+}
+
+function restart() {
+  current = 0;
+  Object.keys(specs).forEach(k => scores[k] = 0);
+  render();
+}
+
+render();
+</script>
+</body>
+</html>
